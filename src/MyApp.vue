@@ -110,7 +110,7 @@ const totalTasks = computed(() => {
         :disabled="!taskList.length || (!completedTasks && taskList.length)"
         @click="removeCompletedTasksClickHandler()"
       >
-        Удалить завершенные {{ completedTasks }}
+        Удалить завершенные
       </button>
       <button
         class="btn btn--clear"
