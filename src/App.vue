@@ -1,8 +1,8 @@
 <script setup>
-import { ref, reactive, computed, provide, readonly } from 'vue'
+import { reactive, computed } from 'vue'
 
 import TodoFooter from './components/TodoFooter.vue'
-import TodoList from './components/TodoList2.vue'
+import TodoList from './components/TodoList.vue'
 
 let todos = reactive([
   {
@@ -24,6 +24,7 @@ let todos = reactive([
 
 function completeTodo(todo) {
   todo.completed = true
+  alert('Завершено')
 }
 
 const removeTodo = (index) => {

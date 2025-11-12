@@ -1,11 +1,14 @@
 <script setup>
-const { todo } = defineProps({
-  todo: {
-    type: Object,
+const { text, completed } = defineProps({
+  text: {
+    type: String,
     required: true,
   },
+  completed: {
+    type: Boolean,
+    default: false,
+  },
 })
-const { text, completed } = todo
 </script>
 <template>
   <li class="todo-list__item" :class="{ 'todo-list__item--completed': completed }">
