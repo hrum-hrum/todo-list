@@ -1,54 +1,39 @@
 <script setup>
-import { defineEmits } from 'vue'
+import { ref, defineEmits } from 'vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
-import * as yup from 'yup'
+//import * as yup from 'yup'
 
-defineProps({
-  todoTitle: String,
-})
+const $emit = defineEmits(['add-todo'])
+const todoTitle = ref('')
 
-const todoTitle2 = defineModel()
+// const formValidationSchema = yup.object({
+//   todoTitleInput: yup.string().required('Введите название todo'),
+// })
 
-const formValidationSchema = yup.object({
-  todoTitleInput: yup.string().required('Введите название todo'),
-  todoTitleInput2: yup.string().required('Введите название todo'),
-})
-
-const emit = defineEmits(['submit:todo-form'])
-
-const formSubmitHandler = (values, { form }) => {
-  console.log(form)
-  emit('submit:todo-form')
+const formSubmitHandler = () => {
+  //console.log(form)
+  if (todoTitle.value) {
+    $emit('add-todo', todoTitle.value)
+    todoTitle.value = ''
+  }
   //form.reset()
 }
 </script>
 
 <template>
-  <Form class="form" :validation-schema="formValidationSchema" @submit="formSubmitHandler">
+  <form class="form" @submit.prevent="formSubmitHandler">
     <div class="form__group form__group--todo">
-      <Field
+      <input
         class="form-control"
         name="todoTitleInput"
         type="text"
         placeholder="Новая задача"
-        :value="todoTitle"
-        @input="$emit('update:todo-title-input', $event.target.value.trim())"
-      />
-    </div>
-    <ErrorMessage name="todoTitleInput" class="message message--error" />
-
-    <div class="form__group form__group--todo">
-      <Field
-        class="form-control"
-        name="todoTitleInput2"
-        type="text"
-        placeholder="Новая задача"
-        v-model="todoTitle2"
+        v-model.trim="todoTitle"
       />
       <button class="btn btn--add-todo" type="submit">Добавить</button>
     </div>
-    <ErrorMessage name="todoTitleInput2" class="message message--error" />
-  </Form>
+    <!-- <ErrorMessage name="todoTitleInput" class="message message--error" /> -->
+  </form>
 </template>
 
 <style setup>

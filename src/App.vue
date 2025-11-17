@@ -1,12 +1,9 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { reactive, computed } from 'vue'
 
 import TodoFooter from './components/TodoFooter.vue'
 import TodoList from './components/TodoList.vue'
 import TodoForm from './components/TodoForm.vue'
-
-const todoTitle = ref('test')
-const todoTitle2 = ref('test2')
 
 let todos = reactive([
   {
@@ -37,29 +34,12 @@ const removeTodo = (index) => {
   todos.splice(index, 1)
 }
 
-const todoInputChangeHandler = (title) => {
-  todoTitle.value = title
-}
-
-const addTodo = () => {
-  if (todoTitle.value) {
-    const newTodoItem = {
-      id: Date.now(),
-      text: todoTitle.value,
-      completed: false,
-    }
-    todos.push(newTodoItem)
-    todoTitle.value = ''
-  }
-  if (todoTitle2.value) {
-    const newTodoItem = {
-      id: Date.now(),
-      text: todoTitle2.value,
-      completed: false,
-    }
-    todos.push(newTodoItem)
-    todoTitle2.value = ''
-  }
+const addTodo = (todoTitle) => {
+  todos.push({
+    id: Date.now(),
+    text: todoTitle,
+    completed: false,
+  })
 }
 
 function clearCompleted() {
@@ -86,12 +66,7 @@ const remainingTodos = computed(() => {
   <main>
     <div class="container todo-app">
       <h1 class="title">Todo List</h1>
-      <TodoForm
-        :todo-title="todoTitle"
-        @update:todo-title-input="todoInputChangeHandler"
-        @submit:todo-form="addTodo"
-        v-model="todoTitle2"
-      />
+      <TodoForm @add-todo="addTodo" />
       <TodoList :todos="todos" @complete-todo="completeTodo" @remove-todo="removeTodo" />
       <TodoFooter
         v-if="todos.length"
