@@ -1,17 +1,17 @@
 <script setup>
 import { ref, defineEmits } from 'vue'
 import { Form, Field, ErrorMessage } from 'vee-validate'
-//import * as yup from 'yup'
+import * as yup from 'yup'
 
-const $emit = defineEmits(['add-todo'])
 const todoTitle = ref('')
+const $emit = defineEmits(['add-todo'])
 
-// const formValidationSchema = yup.object({
-//   todoTitleInput: yup.string().required('Введите название todo'),
-// })
+const formValidationSchema = yup.object({
+  todoTitleInput: yup.string().required('Введите название todo'),
+})
 
-const formSubmitHandler = () => {
-  //console.log(form)
+const formSubmitHandler = (values) => {
+  console.log(values)
   if (todoTitle.value) {
     $emit('add-todo', todoTitle.value)
     todoTitle.value = ''
@@ -21,9 +21,9 @@ const formSubmitHandler = () => {
 </script>
 
 <template>
-  <form class="form" @submit.prevent="formSubmitHandler">
+  <Form class="form" :validation-schema="formValidationSchema" @submit="formSubmitHandler">
     <div class="form__group form__group--todo">
-      <input
+      <Field
         class="form-control"
         name="todoTitleInput"
         type="text"
@@ -32,8 +32,8 @@ const formSubmitHandler = () => {
       />
       <button class="btn btn--add-todo" type="submit">Добавить</button>
     </div>
-    <!-- <ErrorMessage name="todoTitleInput" class="message message--error" /> -->
-  </form>
+    <ErrorMessage name="todoTitleInput" class="message message--error" />
+  </Form>
 </template>
 
 <style setup>
@@ -64,11 +64,12 @@ const formSubmitHandler = () => {
 }
 
 .message {
+  display: block;
   margin: 0;
   font-size: 0.75rem;
-  text-align: center;
   position: relative;
   left: 0;
+  margin-bottom: -1rem;
 }
 
 .message--error {
